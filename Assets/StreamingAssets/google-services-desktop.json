@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "357054842213",
+    "project_id": "courtoicar-e37b1",
+    "storage_bucket": "courtoicar-e37b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357054842213:android:2adfb7827d170cb1624d8c",
+        "android_client_info": {
+          "package_name": "com.HYKinteractive.CourtoiCar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "357054842213-31c5h60iuc54arg2mvo1v8qaarimsptb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwjtbybtsSoivBc4YDsWDUQurBpxGy_nA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357054842213-31c5h60iuc54arg2mvo1v8qaarimsptb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "357054842213-bphku2b9vinoep2gfepu5qtvmi0as3pp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.HYKinteractive.CourtoiCar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
