@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Firebase.Firestore;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CarPanel : MonoBehaviour, IPointerDownHandler
 {
+    //a changer plus tard pour que sa sois selon le user
+    [SerializeField] private string _carPath = "car_list";
     [SerializeField] private TMP_Text _marqueText;
     public class MyStringObjectEvent : UnityEvent<string>
     {
@@ -57,6 +61,9 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
 
         private string _ID;
         public string ID {get=>_ID; set => _ID = value;}
+
+        [SerializeField]private GameObject _delete;
+        [SerializeField]private GameObject _edit;
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
@@ -67,5 +74,18 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData data)
     {
         _click.Invoke(_ID);
+        _delete.SetActive(!_delete.activeInHierarchy);
+        _edit.SetActive(!_edit.activeInHierarchy);
+    }
+
+    public void Delete()
+    {
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+        DocumentReference carRef = db.Collection(_carPath).Document(_ID);
+        carRef.DeleteAsync();
+    }
+    public void Edit()
+    {
+        Debug.Log("edit");
     }
 }

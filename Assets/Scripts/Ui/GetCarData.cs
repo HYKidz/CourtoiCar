@@ -11,15 +11,22 @@ using UnityEngine.UI;
 
 public class GetCarData : MonoBehaviour
 {
+    //a changer plus tard pour que sa sois selon le user
     [SerializeField] private string _carPath = "car_list";
 
     [SerializeField] private GameObject _carPanel;
 
+    [SerializeField] private GridLayoutGroup _grid;
     private Dictionary<string, GameObject> _carActive = new Dictionary<string, GameObject>();
+    [SerializeField]private float _minYCellSize;
+    [SerializeField]private float _maxYCellSize;
+    [SerializeField]private float _vitesseAnim;
+    private float _actualYCellSize;
 
     // private ListenerRegistration _listenerRegistration;
     void Start()
     {
+        _actualYCellSize = _grid.cellSize.y;
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
         Query carQuery = db.Collection(_carPath);
         carQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
@@ -52,8 +59,43 @@ public class GetCarData : MonoBehaviour
 
     void Click(string id)
     {
-        Debug.Log(id);
+        foreach (KeyValuePair<string,GameObject> car  in _carActive)
+        {
+            if(car.Key == id)
+            {
+                //Play anim and set info
+                continue;
+            } 
+            car.Value.SetActive(!car.Value.activeInHierarchy);
+            Anim();
+        }
     }
+
+    //pas ideal, a revoir
+    private void Anim()
+    {
+        float target =0f;
+        float lerp = 0f;
+        if(_actualYCellSize>100) target = _minYCellSize;
+        else target = _maxYCellSize;
+        while (lerp<=1)
+        {
+            
+            lerp += Time.deltaTime/_vitesseAnim;
+            _grid.cellSize = new Vector2(_grid.cellSize.x,(int)Mathf.Lerp(_grid.cellSize.y, target, lerp));
+            _actualYCellSize = _grid.cellSize.y;
+        }
+
+
+
+    }
+
+    // IEnumerator AnimSelect()
+    // {
+    //     float lerp = Time.deltaTime * _vitesseAnim;
+        // _grid.cellSize.y = in
+        
+    // }
 
 
 }
