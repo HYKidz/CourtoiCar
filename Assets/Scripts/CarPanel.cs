@@ -39,8 +39,8 @@ public class CarPanel : MonoBehaviour
         }
     }
         [SerializeField]private TMP_Text _anneText;
-        private int _anne;
-        public int Anne {get=> _anne; set
+        private string _anne;
+        public string Anne {get=> _anne; set
         {
             if(value== _anne) return;
             _anne = value;

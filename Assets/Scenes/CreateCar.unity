@@ -270,7 +270,6 @@ GameObject:
   - component: {fileID: 54538559}
   - component: {fileID: 54538561}
   - component: {fileID: 54538562}
-  - component: {fileID: 54538563}
   m_Layer: 5
   m_Name: Car
   m_TagString: Untagged
@@ -376,26 +375,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9960a6ba5a63ae14ea5ca5a43c0dc15b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carPath: car_list/test
+  _carPath: car_list
   _marqueField: {fileID: 1773983127}
   _plaqueField: {fileID: 1576974861}
   _serieField: {fileID: 331531359}
   _anneField: {fileID: 842346709}
   _submitButton: {fileID: 1117452551}
---- !u!114 &54538563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 54538557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c36ddd2607d2d1d43a31f510223110ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _carPath: car_list/test
-  _carPanel: {fileID: 0}
 --- !u!1 &120935704
 GameObject:
   m_ObjectHideFlags: 0

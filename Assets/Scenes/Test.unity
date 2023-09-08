@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36ddd2607d2d1d43a31f510223110ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _carPath: car_list
+  _carPath: car_list/
   _carPanel: {fileID: 160854624753661669, guid: 70ad7f3171963e840ba95c2155f8e86c, type: 3}
 --- !u!1 &120935704
 GameObject:
