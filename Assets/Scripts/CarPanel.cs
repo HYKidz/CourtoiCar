@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class CarPanel : MonoBehaviour
+public class CarPanel : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] private TMP_Text _marqueText;
+    public class MyStringObjectEvent : UnityEvent<string>
+    {
+
+    }
+    public MyStringObjectEvent _click = new MyStringObjectEvent();
     private string _marque;
     public string Marque
     {
@@ -46,4 +54,18 @@ public class CarPanel : MonoBehaviour
             _anne = value;
             _anneText.text = $"Anne:{value}";
         }}
+
+        private string _ID;
+        public string ID {get=>_ID; set => _ID = value;}
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    // void Awake()
+    // {
+    //     OnPointerDown
+    // }
+    public void OnPointerDown(PointerEventData data)
+    {
+        _click.Invoke(_ID);
+    }
 }

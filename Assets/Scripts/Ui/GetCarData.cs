@@ -15,6 +15,8 @@ public class GetCarData : MonoBehaviour
 
     [SerializeField] private GameObject _carPanel;
 
+    private Dictionary<string, GameObject> _carActive = new Dictionary<string, GameObject>();
+
     // private ListenerRegistration _listenerRegistration;
     void Start()
     {
@@ -32,40 +34,26 @@ public class GetCarData : MonoBehaviour
                 {
 
                     GameObject GOCar = Instantiate(_carPanel, gameObject.transform.position, quaternion.identity);
+                    _carActive.Add(documentSnapshot.Id,GOCar);
                     GOCar.transform.SetParent(gameObject.transform);
                     CarPanel panel = GOCar.GetComponent<CarPanel>();
-                    Debug.Log(car["Anne"]);
+                    // Debug.Log(car["Anne"]);
                     panel.Marque = car["Marque"].ToString();
                     panel.Serie = car["Serie"].ToString();
                     panel.Plaque = car["Plaque"].ToString();
                     panel.Anne = car["Anne"].ToString();
-                    Debug.Log("");
+                    panel.ID = documentSnapshot.Id;
+                    panel._click.AddListener(Click);
+                    // Debug.Log("");
                 }
             }
         });
-        // var firestore = FirebaseFirestore.DefaultInstance;
-
-        // _listenerRegistration = firestore.Document(_carPath).Listen(snapshot =>
-        // {
-        //     var carData = snapshot.ConvertTo<CarData>();
-        //     if (_carPanel != null)
-        //     {
-
-        //         GameObject car = Instantiate(_carPanel, gameObject.transform.position, quaternion.identity);
-        //         car.transform.SetParent(gameObject.transform);
-        //         CarPanel panel = car.GetComponent<CarPanel>();
-        //         panel.Marque = carData.Marque;
-        //         panel.Serie = carData.Serie;
-        //         panel.Plaque = carData.Plaque;
-        //         panel.Anne = carData.Anne;
-
-        //     }
-        // });
     }
-    // void OnDestroy()
-    // {
-    //     _listenerRegistration.Stop();
-    // }
+
+    void Click(string id)
+    {
+        Debug.Log(id);
+    }
 
 
 }
