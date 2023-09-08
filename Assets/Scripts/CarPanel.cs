@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CarPanel : MonoBehaviour, IPointerDownHandler
@@ -83,6 +84,8 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
         DocumentReference carRef = db.Collection(_carPath).Document(_ID);
         carRef.DeleteAsync();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Debug.Log(SceneManager.GetActiveScene().name);
     }
     public void Edit()
     {

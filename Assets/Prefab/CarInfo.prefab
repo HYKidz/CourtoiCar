@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9900aff8301ae49a043c6a15a2d568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _carPath: car_list
   _marqueText: {fileID: 8405302623777151496}
   _plaqueText: {fileID: 3890583765734674036}
   _serieText: {fileID: 7993301312708663855}
@@ -381,7 +382,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2118851352095189360}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5540485280323833294}
+        m_TargetAssemblyTypeName: CarPanel, Assembly-CSharp
+        m_MethodName: Delete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1530631912610989750
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,7 +649,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1209896819887271389}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5540485280323833294}
+        m_TargetAssemblyTypeName: CarPanel, Assembly-CSharp
+        m_MethodName: Edit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5481459405361147939
 GameObject:
   m_ObjectHideFlags: 0
