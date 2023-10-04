@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -61,7 +62,7 @@ void Update()
     fit.aspectRatio = ratio;
 
     float scaleY = backCam.videoVerticallyMirrored ? -1f:1f;
-    background.rectTransform.localScale = new Vector3(1f*ratio, scaleY*ratio, 1f*ratio);
+    background.rectTransform.localScale = new Vector3(1f/ratio, scaleY, 1f/ratio);
 
     int orien = -backCam.videoRotationAngle;
     background.rectTransform.localEulerAngles = new Vector3(0,0,orien);
@@ -69,7 +70,22 @@ void Update()
 
 public void Photo()
 {
-    Debug.Log("took a picture");
+    Debug.Log(Application.dataPath + "/../SaveImages/");
+
+    Texture2D tex = new Texture2D(backCam.width, backCam.height, TextureFormat.RGB24, false);
+    tex.SetPixels32(backCam.GetPixels32());
+
+    // backCam.Stop();
+
+    Debug.Log(tex);
+
+    byte[] imgByte = tex.EncodeToPNG();
+    var dirPath = Application.dataPath + "../SaveImages/";
+                 if(!Directory.Exists(dirPath)) {
+                     Directory.CreateDirectory(dirPath);
+                 }
+                 File.WriteAllBytes(dirPath + "Image" + ".png", imgByte);
+    // File.WriteAllBytes(Path.Combine(Application.persistentDataPath + "/SaveImages/Exwample.JPG"), imgByte);
 }
 
 }
