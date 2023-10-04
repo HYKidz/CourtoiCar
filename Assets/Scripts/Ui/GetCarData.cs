@@ -32,6 +32,7 @@ public class GetCarData : MonoBehaviour
         carQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             QuerySnapshot allCarSnapshot = task.Result;
+            Debug.Log(allCarSnapshot.Documents);
             foreach (DocumentSnapshot documentSnapshot in allCarSnapshot.Documents)
             {
 
@@ -45,7 +46,6 @@ public class GetCarData : MonoBehaviour
                     GOCar.transform.SetParent(gameObject.transform);
                     GOCar.transform.localScale = Vector3.one;
                     CarPanel panel = GOCar.GetComponent<CarPanel>();
-                    // Debug.Log(car["Anne"]);
                     panel.Marque = car["Marque"].ToString();
                     panel.Serie = car["Serie"].ToString();
                     panel.Plaque = car["Plaque"].ToString();
@@ -71,7 +71,7 @@ public class GetCarData : MonoBehaviour
                 continue;
             } 
             car.Value.SetActive(!car.Value.activeInHierarchy);
-            Anim();
+            // Anim();
         }
     }
 

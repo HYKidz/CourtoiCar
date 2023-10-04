@@ -85,6 +85,7 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         _click.Invoke(_ID);
         _delete.SetActive(!_delete.activeInHierarchy);
         _edit.SetActive(!_edit.activeInHierarchy);
+        Debug.Log("Ayy caroumbha");
     }
 
     public void Delete()

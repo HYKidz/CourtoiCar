@@ -18,6 +18,7 @@ public class SetCarData : MonoBehaviour
     [SerializeField] private TMP_InputField _infoField;
 
     [SerializeField] private Button _submitButton;
+    [SerializeField] private GameObject _cam;
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -47,5 +48,9 @@ public class SetCarData : MonoBehaviour
            //pas la meilleur fason de l'appeler, mais work for now
            SceneManager.LoadScene("List");
         });
+    }
+    public void HandlePicture()
+    {
+        _cam.SetActive(!_cam.activeInHierarchy);
     }
 }

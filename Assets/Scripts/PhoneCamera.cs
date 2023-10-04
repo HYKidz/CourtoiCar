@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PhoneCamera : MonoBehaviour
@@ -33,12 +35,15 @@ public class PhoneCamera : MonoBehaviour
             {
                 backCam = new WebCamTexture(devices[i].name, Screen.width, Screen.height);
             }
+                Debug.Log(devices[i].name+i);
         }
 
         if(backCam ==null)
         {
             Debug.Log("unable to find back cam");
-            return;
+            //hack pour use ma cam
+            backCam =new WebCamTexture(devices[0].name, Screen.width, Screen.height);
+            // return;
         }
         backCam.Play();
         background.texture = backCam;
@@ -61,4 +66,10 @@ void Update()
     int orien = -backCam.videoRotationAngle;
     background.rectTransform.localEulerAngles = new Vector3(0,0,orien);
 }
+
+public void Photo()
+{
+    Debug.Log("took a picture");
+}
+
 }
