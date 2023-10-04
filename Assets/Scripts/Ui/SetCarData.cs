@@ -15,6 +15,7 @@ public class SetCarData : MonoBehaviour
     [SerializeField] private TMP_InputField _serieField;
 
     [SerializeField] private TMP_InputField _anneField;
+    [SerializeField] private TMP_InputField _infoField;
 
     [SerializeField] private Button _submitButton;
 
@@ -32,7 +33,8 @@ public class SetCarData : MonoBehaviour
             {"Marque", _marqueField.text},
             {"Plaque", _plaqueField.text},
             {"Serie", _serieField.text},
-            {"Anne", int.Parse(_anneField.text)}
+            {"Anne", int.Parse(_anneField.text)},
+            {"Info", _infoField.text},
 
             };
             DocumentReference AddedDocRef = await db.Collection(_carPath).AddAsync(car);
@@ -43,7 +45,7 @@ public class SetCarData : MonoBehaviour
         //    firestore.Document(_carPath).SetAsync(carData);
 
            //pas la meilleur fason de l'appeler, mais work for now
-           SceneManager.LoadScene("Test");
+           SceneManager.LoadScene("List");
         });
     }
 }

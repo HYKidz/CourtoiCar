@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Test.unity
+    path: Assets/Scenes/List.unity
     guid: 82a95432c24af10478d699dfdeeb6905
   - enabled: 1
     path: Assets/Scenes/CreateCar.unity

@@ -59,6 +59,14 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
             _anne = value;
             _anneText.text = $"Anne:{value}";
         }}
+        [SerializeField]private TMP_Text _infoText;
+        private string _info;
+        public string Info {get=> _info; set
+        {
+            if(value== _info) return;
+            _info = value;
+            _infoText.text = $"Info:{value}";
+        }}
 
         private string _ID;
         public string ID {get=>_ID; set => _ID = value;}

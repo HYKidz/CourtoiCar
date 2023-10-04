@@ -18,5 +18,9 @@ public struct CarData
     [FirestoreProperty]
 
     public int Anne {get; set;}
+    
+    [FirestoreProperty]
+
+    public string Info {get; set;}
 
 }

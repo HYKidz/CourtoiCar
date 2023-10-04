@@ -43,12 +43,16 @@ public class GetCarData : MonoBehaviour
                     GameObject GOCar = Instantiate(_carPanel, gameObject.transform.position, quaternion.identity);
                     _carActive.Add(documentSnapshot.Id,GOCar);
                     GOCar.transform.SetParent(gameObject.transform);
+                    GOCar.transform.localScale = Vector3.one;
                     CarPanel panel = GOCar.GetComponent<CarPanel>();
                     // Debug.Log(car["Anne"]);
                     panel.Marque = car["Marque"].ToString();
                     panel.Serie = car["Serie"].ToString();
                     panel.Plaque = car["Plaque"].ToString();
                     panel.Anne = car["Anne"].ToString();
+                    if(car["Info"]!= null)panel.Info = car["Info"].ToString();
+                    else panel.Info = "Aucun information";
+                    
                     panel.ID = documentSnapshot.Id;
                     panel._click.AddListener(Click);
                     // Debug.Log("");
