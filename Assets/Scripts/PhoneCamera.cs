@@ -11,8 +11,9 @@ public class PhoneCamera : MonoBehaviour
     private bool camAvailable;
     private WebCamTexture backCam;
     private Texture defaultBackground;
-    public RawImage background;
-    public AspectRatioFitter fit;
+    [SerializeField]private RawImage background;
+    [SerializeField]private AspectRatioFitter fit;
+    [SerializeField]private PhotoController _photoController;
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -70,7 +71,7 @@ void Update()
 
 public void Photo()
 {
-    Debug.Log(Application.dataPath + "/../SaveImages/");
+    // Debug.Log(Application.dataPath + "/../SaveImages/");
 
     Texture2D tex = new Texture2D(backCam.width, backCam.height, TextureFormat.RGB24, false);
     tex.SetPixels32(backCam.GetPixels32());
@@ -80,11 +81,16 @@ public void Photo()
     Debug.Log(tex);
 
     byte[] imgByte = tex.EncodeToPNG();
-    var dirPath = Application.dataPath + "../SaveImages/";
-                 if(!Directory.Exists(dirPath)) {
-                     Directory.CreateDirectory(dirPath);
-                 }
-                 File.WriteAllBytes(dirPath + "Image" + ".png", imgByte);
+    _photoController.NewPicture(imgByte, backCam.width, backCam.height);// _photoController.NewPicture(tex);
+
+
+
+    //now we must send to Firebase !!!
+    // var dirPath = Application.dataPath + "/SaveImages/";
+    //              if(!Directory.Exists(dirPath)) {
+    //                  Directory.CreateDirectory(dirPath);
+    //              }
+    //              File.WriteAllBytes(dirPath + "Image" + ".png", imgByte);
     // File.WriteAllBytes(Path.Combine(Application.persistentDataPath + "/SaveImages/Exwample.JPG"), imgByte);
 }
 
