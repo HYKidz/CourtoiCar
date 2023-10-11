@@ -385,6 +385,7 @@ MonoBehaviour:
   _anneField: {fileID: 842346709}
   _infoField: {fileID: 1147562120}
   _submitButton: {fileID: 1117452551}
+  _photo: {fileID: 1187908812}
   _cam: {fileID: 1218865465}
 --- !u!1 &120935704
 GameObject:

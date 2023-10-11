@@ -6,6 +6,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Firebase.Storage;
+using System;
 
 public class SetCarData : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class SetCarData : MonoBehaviour
     [SerializeField] private TMP_InputField _infoField;
 
     [SerializeField] private Button _submitButton;
+    [SerializeField] private PhotoController _photo;
     [SerializeField] private GameObject _cam;
 
     /// <summary>
@@ -38,6 +41,9 @@ public class SetCarData : MonoBehaviour
             {"Info", _infoField.text},
 
             };
+            //a voir cause fucked
+           Dictionary<int, byte[]> dicpic=_photo.GetPicture();
+           StartCoroutine(UploadCoroutine(dicpic));
             DocumentReference AddedDocRef = await db.Collection(_carPath).AddAsync(car);
         //    var carData = new CarData
         //    {
@@ -46,8 +52,48 @@ public class SetCarData : MonoBehaviour
         //    firestore.Document(_carPath).SetAsync(carData);
 
            //pas la meilleur fason de l'appeler, mais work for now
-           SceneManager.LoadScene("List");
+        //    SceneManager.LoadScene("List");
         });
+    }
+    //might get scrapped
+     private IEnumerator UploadCoroutine(Dictionary<int, byte[]> pic)
+    {
+        var storage = FirebaseStorage.DefaultInstance;
+                Debug.Log("you");
+        for (int i = 0; i < 3; i++)
+        {
+            if (!pic.ContainsKey(i))
+            {
+                Debug.Log("are");
+                yield break;
+            }
+            else
+            {
+                // Debug.Log(Guid);
+                var ScreenshotReference = storage.GetReference($"/photo/${Guid.NewGuid()}.jpg");
+                var metadataChange = new MetadataChange()
+                {
+                    ContentEncoding = "image/png",
+                    // CustomMetadata = 
+                };
+                var uploadTask = ScreenshotReference.PutBytesAsync(pic[i], metadataChange);
+                yield return new WaitUntil(() => uploadTask.IsCompleted);
+
+                if (uploadTask.Exception != null)
+                {
+                    Debug.LogError($"Failed to upload because {uploadTask.Exception}");
+                    yield break;
+                }
+                var getUrlTask = ScreenshotReference.GetDownloadUrlAsync();
+                yield return new WaitUntil(() => getUrlTask.IsCompleted);
+                if (getUrlTask.Exception != null)
+                {
+                    Debug.LogError($"Failed to get a download url with {getUrlTask.Exception}");
+                    yield break;
+                }
+                Debug.Log($"Download from {getUrlTask.Result}");
+            }
+        }
     }
     public void HandlePicture()
     {
