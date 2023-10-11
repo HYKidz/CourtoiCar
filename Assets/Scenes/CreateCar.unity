@@ -384,7 +384,6 @@ MonoBehaviour:
   _serieField: {fileID: 331531359}
   _anneField: {fileID: 842346709}
   _infoField: {fileID: 1147562120}
-  _submitButton: {fileID: 1117452551}
   _photo: {fileID: 1187908812}
   _cam: {fileID: 1218865465}
 --- !u!1 &120935704
@@ -1963,7 +1962,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1117452552}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 54538562}
+        m_TargetAssemblyTypeName: SetCarData, Assembly-CSharp
+        m_MethodName: Click
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1117452552
 MonoBehaviour:
   m_ObjectHideFlags: 0

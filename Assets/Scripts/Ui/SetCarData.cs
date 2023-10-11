@@ -18,10 +18,10 @@ public class SetCarData : MonoBehaviour
 
     [SerializeField] private TMP_InputField _anneField;
     [SerializeField] private TMP_InputField _infoField;
-
-    [SerializeField] private Button _submitButton;
     [SerializeField] private PhotoController _photo;
     [SerializeField] private GameObject _cam;
+    private FirebaseFirestore db;
+    private List<string> _picList = new List<string>();
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -29,21 +29,56 @@ public class SetCarData : MonoBehaviour
     /// </summary>
     void Start()
     {
-        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        _submitButton.onClick.AddListener(async ()=>
-        {
-            Dictionary<string, object> car = new Dictionary<string, object>
+        db = FirebaseFirestore.DefaultInstance;
+        _photo.SendPicPath.AddListener(RetrievePathPicture);
+        _photo.SendInfo.AddListener(SendInfo);
+        // _submitButton.onClick.AddListener(async ()=>
+        // {
+        //     Dictionary<string, object> car = new Dictionary<string, object>
+        //     {
+        //     {"Marque", _marqueField.text},
+        //     {"Plaque", _plaqueField.text},
+        //     {"Serie", _serieField.text},
+        //     {"Anne", int.Parse(_anneField.text)},
+        //     {"Info", _infoField.text},
+        //     {"Picture",_picList }
+
+        //     };
+        //     //a voir cause fucked
+        // //    Dictionary<int, byte[]> dicpic=_photo.GetPicture();
+    
+        // //    StartCoroutine(UploadCoroutine(dicpic));
+        //     DocumentReference AddedDocRef = await db.Collection(_carPath).AddAsync(car);
+        // //    var carData = new CarData
+        // //    {
+        // //    };
+        // //    var firestore = FirebaseFirestore.DefaultInstance;
+        // //    firestore.Document(_carPath).SetAsync(carData);
+
+        //    //pas la meilleur fason de l'appeler, mais work for now
+        //    SceneManager.LoadScene("List");
+        // });
+    }
+    public void Click()
+    {
+            _photo.GetPicture(_marqueField.text);
+    }
+    private async void SendInfo()
+    {
+         Dictionary<string, object> car = new Dictionary<string, object>
             {
             {"Marque", _marqueField.text},
             {"Plaque", _plaqueField.text},
             {"Serie", _serieField.text},
             {"Anne", int.Parse(_anneField.text)},
             {"Info", _infoField.text},
+            {"Picture",_picList }
 
             };
             //a voir cause fucked
-           Dictionary<int, byte[]> dicpic=_photo.GetPicture();
-           StartCoroutine(UploadCoroutine(dicpic));
+        //    Dictionary<int, byte[]> dicpic=_photo.GetPicture();
+    
+        //    StartCoroutine(UploadCoroutine(dicpic));
             DocumentReference AddedDocRef = await db.Collection(_carPath).AddAsync(car);
         //    var carData = new CarData
         //    {
@@ -52,51 +87,17 @@ public class SetCarData : MonoBehaviour
         //    firestore.Document(_carPath).SetAsync(carData);
 
            //pas la meilleur fason de l'appeler, mais work for now
-        //    SceneManager.LoadScene("List");
-        });
-    }
-    //might get scrapped
-     private IEnumerator UploadCoroutine(Dictionary<int, byte[]> pic)
-    {
-        var storage = FirebaseStorage.DefaultInstance;
-                Debug.Log("you");
-        for (int i = 0; i < 3; i++)
-        {
-            if (!pic.ContainsKey(i))
-            {
-                Debug.Log("are");
-                yield break;
-            }
-            else
-            {
-                // Debug.Log(Guid);
-                var ScreenshotReference = storage.GetReference($"/photo/${Guid.NewGuid()}.jpg");
-                var metadataChange = new MetadataChange()
-                {
-                    ContentEncoding = "image/png",
-                    // CustomMetadata = 
-                };
-                var uploadTask = ScreenshotReference.PutBytesAsync(pic[i], metadataChange);
-                yield return new WaitUntil(() => uploadTask.IsCompleted);
+           SceneManager.LoadScene("List");
 
-                if (uploadTask.Exception != null)
-                {
-                    Debug.LogError($"Failed to upload because {uploadTask.Exception}");
-                    yield break;
-                }
-                var getUrlTask = ScreenshotReference.GetDownloadUrlAsync();
-                yield return new WaitUntil(() => getUrlTask.IsCompleted);
-                if (getUrlTask.Exception != null)
-                {
-                    Debug.LogError($"Failed to get a download url with {getUrlTask.Exception}");
-                    yield break;
-                }
-                Debug.Log($"Download from {getUrlTask.Result}");
-            }
-        }
     }
+   
     public void HandlePicture()
     {
         _cam.SetActive(!_cam.activeInHierarchy);
+    }
+    //J'aime pas sa 
+    private void RetrievePathPicture(string path)
+    {
+        _picList.Add(path);
     }
 }

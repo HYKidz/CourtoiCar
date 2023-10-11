@@ -3,22 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using Firebase.Storage;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class MyStringEvent : UnityEvent<string>
+{
+
+}
 public class PhotoController : MonoBehaviour
 {
+
     //pour l'instant on prend des image deja la, mais penser a consevoir qu'on peu rajouter nombre de photo
     [SerializeField] private RawImage[] _images;
-    // private Coroutine _co;
-    // public Coroutine Co {get =>_co; set=> _co = value}
+    private MyStringEvent _sendPicPath;
+    public MyStringEvent SendPicPath {get => _sendPicPath; set => _sendPicPath = value;}
+    private UnityEvent _sendInfo;
+    public UnityEvent SendInfo{get=>_sendInfo; set => _sendInfo = value; }
     private int _counter = 0;
     private Dictionary<int, byte[]> _dicpic { get; set; } = new Dictionary<int, byte[]>();
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
     /// any of the Update methods is called the first time.
     /// </summary>
-    void Start()
+    void Awake()
     {
+        _sendPicPath = new MyStringEvent();
+        _sendInfo = new UnityEvent();
         // foreach (RawImage image in _images)
         // {
         //     image.GetComponent<RawImage>();
@@ -49,49 +60,48 @@ public class PhotoController : MonoBehaviour
         else _counter++;
     }
 
-    public Dictionary<int,byte[]> GetPicture()
+    public void GetPicture(string marque)
     {
-        // StartCoroutine(UploadCoroutine());
-        return _dicpic;
+        StartCoroutine(UploadCoroutine(marque));
     }
     //may be good, but must think of how to implement photo in panel
-    // private IEnumerator UploadCoroutine()
-    // {
-    //     var storage = FirebaseStorage.DefaultInstance;
-    //             Debug.Log("you");
-    //     for (int i = 0; i < _images.Length; i++)
-    //     {
-    //         if (!_dicpic.ContainsKey(i))
-    //         {
-    //             Debug.Log("are");
-    //             yield break;
-    //         }
-    //         else
-    //         {
-    //             Debug.Log("hey");
-    //             var ScreenshotReference = storage.GetReference($"/photo/${Guid.NewGuid()}.jpg");
-    //             var metadataChange = new MetadataChange()
-    //             {
-    //                 ContentEncoding = "image/png",
-    //                 // CustomMetadata = 
-    //             };
-    //             var uploadTask = ScreenshotReference.PutBytesAsync(_dicpic[i], metadataChange);
-    //             yield return new WaitUntil(() => uploadTask.IsCompleted);
+    private IEnumerator UploadCoroutine(string marque)
+    {
+        var storage = FirebaseStorage.DefaultInstance;
+        for (int i = 0; i < _images.Length; i++)
+        {
+            if (!_dicpic.ContainsKey(i))
+            {
+                yield break;
+            }
+            else
+            {
+                string path = Guid.NewGuid().ToString();
+                var ScreenshotReference = storage.GetReference($"/{marque}/${path}.jpg");
+                _sendPicPath.Invoke(path);
+                var metadataChange = new MetadataChange()
+                {
+                    ContentEncoding = "image/png",
+                    // CustomMetadata = 
+                };
+                var uploadTask = ScreenshotReference.PutBytesAsync(_dicpic[i], metadataChange);
+                yield return new WaitUntil(() => uploadTask.IsCompleted);
 
-    //             if (uploadTask.Exception != null)
-    //             {
-    //                 Debug.LogError($"Failed to upload because {uploadTask.Exception}");
-    //                 yield break;
-    //             }
-    //             var getUrlTask = ScreenshotReference.GetDownloadUrlAsync();
-    //             yield return new WaitUntil(() => getUrlTask.IsCompleted);
-    //             if (getUrlTask.Exception != null)
-    //             {
-    //                 Debug.LogError($"Failed to get a download url with {getUrlTask.Exception}");
-    //                 yield break;
-    //             }
-    //             Debug.Log($"Download from {getUrlTask.Result}");
-    //         }
-    //     }
-    // }
+                if (uploadTask.Exception != null)
+                {
+                    Debug.LogError($"Failed to upload because {uploadTask.Exception}");
+                    yield break;
+                }
+                var getUrlTask = ScreenshotReference.GetDownloadUrlAsync();
+                yield return new WaitUntil(() => getUrlTask.IsCompleted);
+                if (getUrlTask.Exception != null)
+                {
+                    Debug.LogError($"Failed to get a download url with {getUrlTask.Exception}");
+                    yield break;
+                }
+                Debug.Log($"Download from {getUrlTask.Result}");
+            }
+        }
+                _sendInfo.Invoke();
+    }
 }
