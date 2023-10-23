@@ -240,9 +240,9 @@ MonoBehaviour:
   _carPath: car_list/
   _carPanel: {fileID: 160854624753661669, guid: 70ad7f3171963e840ba95c2155f8e86c, type: 3}
   _grid: {fileID: 54538561}
-  _minYCellSize: 65
-  _maxYCellSize: 500
-  _vitesseAnim: 200
+  _minYCellSize: 450
+  _maxYCellSize: 2150
+  _vitesseAnim: 0.4
 --- !u!1 &120935704
 GameObject:
   m_ObjectHideFlags: 0

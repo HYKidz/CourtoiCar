@@ -128,6 +128,7 @@ MonoBehaviour:
   _infoText: {fileID: 1941547779733835578}
   _delete: {fileID: 855604706465300499}
   _edit: {fileID: 1870515810677152662}
+  _picture: {fileID: 4458494823100062057, guid: c48c9d80ad259dd438dee2d5d13049ad, type: 3}
 --- !u!1 &298172653991333231
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Firebase.Firestore;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -46,46 +47,51 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     {
         get => _serie; set
         {
-            if(value == _serie) return;
+            if (value == _serie) return;
             _serie = value;
             _serieText.text = $"Serie:{value}";
         }
     }
-        [SerializeField]private TMP_Text _anneText;
-        private string _anne;
-        public string Anne {get=> _anne; set
+    [SerializeField] private TMP_Text _anneText;
+    private string _anne;
+    public string Anne
+    {
+        get => _anne; set
         {
-            if(value== _anne) return;
+            if (value == _anne) return;
             _anne = value;
             _anneText.text = $"Anne:{value}";
-        }}
-        [SerializeField]private TMP_Text _infoText;
-        private string _info;
-        public string Info {get=> _info; set
+        }
+    }
+    [SerializeField] private TMP_Text _infoText;
+    private string _info;
+    public string Info
+    {
+        get => _info; set
         {
-            if(value== _info) return;
+            if (value == _info) return;
             _info = value;
             _infoText.text = $"Info:{value}";
-        }}
+        }
+    }
 
-        private string _ID;
-        public string ID {get=>_ID; set => _ID = value;}
+    private string _ID;
+    public string ID { get => _ID; set => _ID = value; }
 
-        [SerializeField]private GameObject _delete;
-        [SerializeField]private GameObject _edit;
-    /// <summary>
-    /// Awake is called when the script instance is being loaded.
-    /// </summary>
-    // void Awake()
-    // {
-    //     OnPointerDown
-    // }
+    [SerializeField] private GameObject _delete;
+    [SerializeField] private GameObject _edit;
+    [SerializeField] private GameObject _picture;
+    private List<GameObject> _pic = new List<GameObject>();
+
     public void OnPointerDown(PointerEventData data)
     {
         _click.Invoke(_ID);
         _delete.SetActive(!_delete.activeInHierarchy);
         _edit.SetActive(!_edit.activeInHierarchy);
-        Debug.Log("Ayy caroumbha");
+        foreach (GameObject pic in _pic)
+        {
+            pic.SetActive(_delete.activeInHierarchy);
+        }
     }
 
     public void Delete()
@@ -95,6 +101,17 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         carRef.DeleteAsync();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Debug.Log(SceneManager.GetActiveScene().name);
+    }
+    public void AddPic(Texture2D pic)
+    {
+        GameObject aPic = Instantiate(_picture, gameObject.transform.position, quaternion.identity);
+       _pic.Add(aPic);
+        aPic.SetActive(false);
+        Debug.Log("Way ?");
+        aPic.transform.SetParent(gameObject.transform);
+        aPic.transform.localScale = Vector3.one;
+        RawImage image = aPic.GetComponent<RawImage>();
+        image.texture = pic;
     }
     public void Edit()
     {

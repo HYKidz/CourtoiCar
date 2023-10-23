@@ -17,9 +17,11 @@ public class PhotoController : MonoBehaviour
     //pour l'instant on prend des image deja la, mais penser a consevoir qu'on peu rajouter nombre de photo
     [SerializeField] private RawImage[] _images;
     private MyStringEvent _sendPicPath;
-    public MyStringEvent SendPicPath {get => _sendPicPath; set => _sendPicPath = value;}
+    private int _width;
+    private int _height;
+    public MyStringEvent SendPicPath { get => _sendPicPath; set => _sendPicPath = value; }
     private UnityEvent _sendInfo;
-    public UnityEvent SendInfo{get=>_sendInfo; set => _sendInfo = value; }
+    public UnityEvent SendInfo { get => _sendInfo; set => _sendInfo = value; }
     private int _counter = 0;
     private Dictionary<int, byte[]> _dicpic { get; set; } = new Dictionary<int, byte[]>();
     /// <summary>
@@ -42,6 +44,8 @@ public class PhotoController : MonoBehaviour
 
     public void NewPicture(byte[] picture, int width, int height)
     {
+        _width = width;
+        _height = height;
         //a voir pour choisire une photo dans la gallerie
         // NativeGallery.SaveImageToGallery(picture, "no", "no");
         Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
@@ -78,11 +82,14 @@ public class PhotoController : MonoBehaviour
             {
                 string path = Guid.NewGuid().ToString();
                 var ScreenshotReference = storage.GetReference($"/{marque}/${path}.jpg");
-                _sendPicPath.Invoke(path);
                 var metadataChange = new MetadataChange()
                 {
-                    ContentEncoding = "image/png",
-                    // CustomMetadata = 
+                    ContentEncoding = "image/jpg",
+                    CustomMetadata = new Dictionary<string, string>()
+                    {
+                        {"Width", _width.ToString()},
+                        {"Height",_height.ToString()}
+                    }
                 };
                 var uploadTask = ScreenshotReference.PutBytesAsync(_dicpic[i], metadataChange);
                 yield return new WaitUntil(() => uploadTask.IsCompleted);
@@ -100,8 +107,9 @@ public class PhotoController : MonoBehaviour
                     yield break;
                 }
                 Debug.Log($"Download from {getUrlTask.Result}");
+                _sendPicPath.Invoke($"${path}");
             }
         }
-                _sendInfo.Invoke();
+        _sendInfo.Invoke();
     }
 }
