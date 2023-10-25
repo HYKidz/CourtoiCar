@@ -150,6 +150,6 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     }
     public void Edit()
     {
-        Debug.Log("edit");
+        SceneManager.LoadScene("Edit");
     }
 }
