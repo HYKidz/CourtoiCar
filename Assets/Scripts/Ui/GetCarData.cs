@@ -44,7 +44,7 @@ public class GetCarData : MonoBehaviour
                 Dictionary<string, object> car = documentSnapshot.ToDictionary();
                 if (_carPanel != null)
                 {
-
+                
                     GameObject GOCar = Instantiate(_carPanel, gameObject.transform.position, quaternion.identity);
                     _carActive.Add(documentSnapshot.Id, GOCar);
                     GOCar.transform.SetParent(gameObject.transform);
@@ -65,6 +65,9 @@ public class GetCarData : MonoBehaviour
                         Trigger($"{car["Marque"]}/{picture[i]}.jpg", panel);
                         // Trigger($"{picture[i]}.jpg", panel);
                     }
+                    // List<object> Boolean = car["Disponible"] as List<object>;
+                    bool dispo = bool.Parse(car["Disponible"].ToString());
+                    panel.Dispo = dispo;
                     panel.ID = documentSnapshot.Id;
                     panel._click.AddListener(Click);
                     // Debug.Log("");

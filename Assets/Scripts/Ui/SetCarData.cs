@@ -72,20 +72,12 @@ public class SetCarData : MonoBehaviour
             {"Serie", _serieField.text},
             {"Anne", int.Parse(_anneField.text)},
             {"Info", _infoField.text},
-            {"Picture",_picList }
+            {"Picture",_picList },
+            {"Disponible", true}
 
             };
-            //a voir cause fucked
-        //    Dictionary<int, byte[]> dicpic=_photo.GetPicture();
-    
-        //    StartCoroutine(UploadCoroutine(dicpic));
             DocumentReference AddedDocRef = await db.Collection(_carPath).AddAsync(car);
-        //    var carData = new CarData
-        //    {
-        //    };
-        //    var firestore = FirebaseFirestore.DefaultInstance;
-        //    firestore.Document(_carPath).SetAsync(carData);
-
+            
            //pas la meilleur fason de l'appeler, mais work for now
            SceneManager.LoadScene("List");
 

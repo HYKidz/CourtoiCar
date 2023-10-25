@@ -30,6 +30,16 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
             _marqueText.text = $"Marque:{value}";
         }
     }
+    private bool _dispo;
+    public bool Dispo
+    {
+        get => _dispo; set
+        {
+            _dispo = value;
+            if(_dispo) _fond.color = Color.green;
+            else _fond.color = Color.red;
+        }
+    }
     [SerializeField] private TMP_Text _plaqueText;
     private string _plaque;
     public string Plaque
@@ -87,13 +97,15 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     private int _minY;
     private List<GameObject> _pic = new List<GameObject>();
     private GridLayoutGroup _grid;
+    private Image _fond;
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
     /// any of the Update methods is called the first time.
     /// </summary>
-    void Start()
+    void Awake()
     {
+        _fond = GetComponent<Image>();
         _grid = GetComponent<GridLayoutGroup>();
         _minX = (int)_grid.cellSize.x;
         _minY = (int)_grid.cellSize.y;
@@ -111,11 +123,9 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         if(_delete.activeInHierarchy) 
         {
             _grid.cellSize = new Vector2 (_maxX,_maxY);
-            Debug.Log(_minX);
         }
         else 
         {
-            Debug.Log(_maxX);
             _grid.cellSize = new Vector2 (_minX,_minY);
         }
     }
