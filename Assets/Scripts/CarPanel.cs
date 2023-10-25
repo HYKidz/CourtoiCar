@@ -81,7 +81,23 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     [SerializeField] private GameObject _delete;
     [SerializeField] private GameObject _edit;
     [SerializeField] private GameObject _picture;
+    [Range (250, 400)] [SerializeField] private int _maxX;
+    [Range (250, 400)] [SerializeField] private int _maxY;
+    private int _minX;
+    private int _minY;
     private List<GameObject> _pic = new List<GameObject>();
+    private GridLayoutGroup _grid;
+
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+        _grid = GetComponent<GridLayoutGroup>();
+        _minX = (int)_grid.cellSize.x;
+        _minY = (int)_grid.cellSize.y;
+    }
 
     public void OnPointerDown(PointerEventData data)
     {
@@ -91,6 +107,16 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         foreach (GameObject pic in _pic)
         {
             pic.SetActive(_delete.activeInHierarchy);
+        }
+        if(_delete.activeInHierarchy) 
+        {
+            _grid.cellSize = new Vector2 (_maxX,_maxY);
+            Debug.Log(_minX);
+        }
+        else 
+        {
+            Debug.Log(_maxX);
+            _grid.cellSize = new Vector2 (_minX,_minY);
         }
     }
 
