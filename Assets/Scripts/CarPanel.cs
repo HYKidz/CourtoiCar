@@ -107,7 +107,6 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         GameObject aPic = Instantiate(_picture, gameObject.transform.position, quaternion.identity);
        _pic.Add(aPic);
         aPic.SetActive(false);
-        Debug.Log("Way ?");
         aPic.transform.SetParent(gameObject.transform);
         aPic.transform.localScale = Vector3.one;
         RawImage image = aPic.GetComponent<RawImage>();

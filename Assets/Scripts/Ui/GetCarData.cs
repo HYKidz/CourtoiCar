@@ -54,7 +54,7 @@ public class GetCarData : MonoBehaviour
                     panel.Serie = car["Serie"].ToString();
                     panel.Plaque = car["Plaque"].ToString();
                     panel.Anne = car["Anne"].ToString();
-                    if (car["Info"] != null) panel.Info = car["Info"].ToString();
+                    if (car["Info"] != "") panel.Info = car["Info"].ToString();
                     else panel.Info = "Aucun information";
                     List<object> picture = car["Picture"] as List<object>;
 
