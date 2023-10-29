@@ -98,6 +98,12 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     private List<GameObject> _pic = new List<GameObject>();
     private GridLayoutGroup _grid;
     private Image _fond;
+    private SetClientData _clientGest;
+    public SetClientData ClientGest {get=> _clientGest; set => _clientGest = value;}
+    private GameObject _client;
+    public GameObject Client {get=>_client; set => _client = value;}
+    private GameObject _car;
+    public GameObject Car {get=>_car; set => _car = value;}
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -110,6 +116,15 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         _minX = (int)_grid.cellSize.x;
         _minY = (int)_grid.cellSize.y;
     }
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    // void Start()
+    // {
+    //     _clientGest = _client.GetComponent<SetClientData>();
+        
+    // }
 
     public void OnPointerDown(PointerEventData data)
     {
@@ -150,6 +165,9 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     }
     public void Edit()
     {
-        SceneManager.LoadScene("Edit");
+        _client.GetComponent<SetClientData>().IdCar = _ID;
+        _car.SetActive(!_car.activeInHierarchy);
+        _client.SetActive(!_client.activeInHierarchy);
+        // SceneManager.LoadScene("Edit");
     }
 }

@@ -25,6 +25,8 @@ public class GetCarData : MonoBehaviour
     [SerializeField] private float _minYCellSize;
     [SerializeField] private float _maxYCellSize;
     [SerializeField] private float _vitesseAnim;
+    // [SerializeField] private GameObject _car;
+    [SerializeField] private GameObject _client;
     private float _actualYCellSize;
 
     // private ListenerRegistration _listenerRegistration;
@@ -68,6 +70,8 @@ public class GetCarData : MonoBehaviour
                     // List<object> Boolean = car["Disponible"] as List<object>;
                     bool dispo = bool.Parse(car["Disponible"].ToString());
                     panel.Dispo = dispo;
+                    panel.Car = gameObject;
+                    panel.Client = _client;
                     panel.ID = documentSnapshot.Id;
                     panel._click.AddListener(Click);
                     // Debug.Log("");
