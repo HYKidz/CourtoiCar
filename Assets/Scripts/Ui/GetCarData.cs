@@ -38,7 +38,7 @@ public class GetCarData : MonoBehaviour
         carQuery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             QuerySnapshot allCarSnapshot = task.Result;
-            Debug.Log(allCarSnapshot.Documents);
+            // Debug.Log(allCarSnapshot.Documents);
             foreach (DocumentSnapshot documentSnapshot in allCarSnapshot.Documents)
             {
 
