@@ -32,8 +32,6 @@ public class SetClientData : MonoBehaviour
             {
                 Debug.Log(String.Format("Document Data for {0} document:", allClient.Id));
                 Dictionary<string, object> client = allClient.ToDictionary();
-                // _listClient.AddOptions(client["Nom"]); 
-                // Debug.Log(client["Nom"].ToString());
                 _idClient.Add(String.Format("{0}", allClient.Id));
                 _option.Add(client["Nom"].ToString());
             }
@@ -49,24 +47,24 @@ public class SetClientData : MonoBehaviour
     {
 
         _listClient.AddOptions(_option);
-        // foreach (string item in _option)
-        // {
-        // // _listClient.AddOptions(_option);
-        //     Debug.Log(item);
-        // }
-
     }
 
     public async void Click()
     {
         //work for now, but potentially change car Id to include a bigger object containing timestamp to get the time in and out 
+
+        Debug.Log(System.DateTime.Now);
+        // string date = DateTime.Now;
+        /// c'est bon ca ici
         if (_listClient.value == 0 && _nomField.text!="")
         {
 
             Dictionary<string, object> client = new Dictionary<string, object>
         {
             {"Nom", _nomField.text},
-            {"CarId", _idCar}
+            {"CarId", _idCar},
+            {"TimeGet", DateTime.Now}
+            
         };
             DocumentReference AddDocRef = await db.Collection(_clientPath).AddAsync(client);
             ChangeCarActive();
@@ -77,7 +75,8 @@ public class SetClientData : MonoBehaviour
             DocumentReference clientRef = db.Collection(_clientPath).Document(_idClient[_listClient.value-1]);
             Dictionary<string, object> updateClient = new Dictionary<string, object>
             {
-                {"CarId", _idCar}
+                {"CarId", _idCar},
+                {"TimeGet", DateTime.Now}
             };
             await clientRef.UpdateAsync(updateClient).ContinueWithOnMainThread(task=>
             {
@@ -88,6 +87,9 @@ public class SetClientData : MonoBehaviour
         {
             Debug.LogWarning("thats not supposed to happen");
         }
+
+
+        //pas sa encore
         //Ajouter Le char choisi au client existant
         // else if(_)
         ///Test///

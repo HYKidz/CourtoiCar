@@ -66,7 +66,8 @@ public class PhotoController : MonoBehaviour
 
     public void GetPicture(string marque)
     {
-        StartCoroutine(UploadCoroutine(marque));
+        if(_dicpic.Count>=1)StartCoroutine(UploadCoroutine(marque));
+        
     }
     //may be good, but must think of how to implement photo in panel
     private IEnumerator UploadCoroutine(string marque)

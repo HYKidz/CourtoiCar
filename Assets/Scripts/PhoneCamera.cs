@@ -98,7 +98,7 @@ public class PhoneCamera : MonoBehaviour
     /// </summary>
     void OnDestroy()
     {
-        backCam.Stop();
+        if(backCam!=null)backCam.Stop();
     }
 
 }

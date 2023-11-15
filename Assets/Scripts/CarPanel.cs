@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Firebase.Extensions;
 using Firebase.Firestore;
 using TMPro;
 using Unity.Mathematics;
@@ -37,9 +39,38 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         {
             _dispo = value;
             if(_dispo) _fond.color = Color.green;
-            else _fond.color = Color.red;
+            else 
+            {
+                //iz not good
+               CallClient();
+                _fond.color = Color.red;
+                
+            }
         }
     }
+
+    private async void CallClient()
+    {
+         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+                Query clientquery = db.Collection("client_list");
+                await clientquery.GetSnapshotAsync().ContinueWithOnMainThread(task=>
+                {
+                    QuerySnapshot allClientSnapshot = task.Result;
+                    foreach (DocumentSnapshot item in allClientSnapshot.Documents)
+                    {
+                        Dictionary<string, object> client = item.ToDictionary();  
+                        // Debug.Log(_ID);
+                        // Debug.Log(client["CarId"].ToString()==_ID);
+                        if(client["CarId"].ToString()==_ID)
+                        {
+                            Debug.Log("yis is it");
+                            // _clientText.GetComponent<GameObject>().SetActive(true);
+                            Clienttxt = client["Nom"].ToString();
+                        }   
+                    }
+                });
+    }
+
     [SerializeField] private TMP_Text _plaqueText;
     private string _plaque;
     public string Plaque
@@ -82,6 +113,17 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
             if (value == _info) return;
             _info = value;
             _infoText.text = $"Info:{value}";
+        }
+    }
+    [SerializeField] private TMP_Text _clientText;
+    private string _clienttxt;
+    public string Clienttxt
+    {
+        get => _clienttxt; set
+        {
+            if (value == _clienttxt) return;
+            _clienttxt = value;
+            _clientText.text = $"Client:{value}";
         }
     }
 
