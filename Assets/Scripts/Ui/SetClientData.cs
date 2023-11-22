@@ -102,6 +102,16 @@ public class SetClientData : MonoBehaviour
 
         // }
     }
+    public async void CreateClient()
+    {
+        Dictionary<string, object> client = new Dictionary<string, object>
+        {
+            {"Nom", _nomField.text}
+        };
+        DocumentReference AddDocRef = await db.Collection(_clientPath).AddAsync(client);
+
+        SceneManager.LoadScene("List");
+    }
 
     private async void ChangeCarActive()
     {
