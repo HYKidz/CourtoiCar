@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Firebase.Extensions;
 using Firebase.Firestore;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GetClientData : MonoBehaviour
 {
     [SerializeField] private string _clientPath = "client_list";
+    [SerializeField] private string _carPath = "car_list";
 
     [SerializeField] private GameObject _clientPanel;
 
@@ -44,11 +46,42 @@ public class GetClientData : MonoBehaviour
                         GOClient.transform.localScale = Vector3.one;
                         ClientPanel panel = GOClient.GetComponent<ClientPanel>();
                         panel.Nom = client["Nom"].ToString();
-                        Debug.Log(client["CarId"]);
-                        bool isTaken = (client["CarId"]!= null);
+                        // Debug.Log(client["CarId"]);
+                        bool isTaken = client.ContainsKey("CarId");
+                        if(isTaken) 
+                        {
+                            DocumentReference docRef = db.Collection(_carPath).Document(client["CarId"].ToString());
+                            docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+                            {
+                                DocumentSnapshot snapshot = task.Result;
+                                if(snapshot.Exists)
+                                {
+                                    Dictionary<string,object> car = snapshot.ToDictionary();
+                                    panel.Anne = car["Anne"].ToString();
+                                    panel.Info = car["Info"].ToString();
+                                    panel.Serie = car["Serie"].ToString();
+                                    panel.Plaque = car["Plaque"].ToString();
+                                    var timestamp = (Timestamp) client["TimeGet"];
+                                    var maDate = timestamp.ToDateTime();
+                                    // DateTime result = DateTime.ParseExact(client["TimeGet"].ToString().Replace("Timest"))
+                                    panel.DateEmprunt = maDate.ToString();
+                                    panel._buttonRetour.SetActive(true);
+                                    Debug.Log(maDate);
+                                    // DateTime timeGet = DateTime.TryParse(client["TimeGet"]);
+                            }});
+                        }
+                        // GetCarInfo();
                         Debug.Log(isTaken);
                     }
             }
         });
     }
+    // private DateTime ToDateTime ( DateTime value)
+    // {
+    //     return value.ToString("yyyyMMddHHmmssfff");
+    // }
+    // private async GetCarInfo()
+    // {
+
+    // }
 }

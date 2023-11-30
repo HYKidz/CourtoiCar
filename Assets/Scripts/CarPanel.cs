@@ -38,37 +38,42 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         get => _dispo; set
         {
             _dispo = value;
-            if(_dispo) _fond.color = Color.green;
-            else 
+            if (_dispo) _fond.color = Color.green;
+            else
             {
                 //iz not good
-               CallClient();
+                CallClient();
                 _fond.color = Color.red;
-                
+
             }
         }
     }
 
     private async void CallClient()
     {
-         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-                Query clientquery = db.Collection("client_list");
-                await clientquery.GetSnapshotAsync().ContinueWithOnMainThread(task=>
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+        Query clientquery = db.Collection("client_list");
+        await clientquery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        {
+            QuerySnapshot allClientSnapshot = task.Result;
+            foreach (DocumentSnapshot item in allClientSnapshot.Documents)
+            {
+                Dictionary<string, object> client = item.ToDictionary();
+                // Debug.Log(_ID);
+                // Debug.Log(client["CarId"].ToString()==_ID);
+                if (client.ContainsKey("CarId"))
                 {
-                    QuerySnapshot allClientSnapshot = task.Result;
-                    foreach (DocumentSnapshot item in allClientSnapshot.Documents)
+
+                    if (client["CarId"].ToString() == _ID)
                     {
-                        Dictionary<string, object> client = item.ToDictionary();  
-                        // Debug.Log(_ID);
-                        // Debug.Log(client["CarId"].ToString()==_ID);
-                        if(client["CarId"].ToString()==_ID)
-                        {
-                            Debug.Log("yis is it");
-                            // _clientText.GetComponent<GameObject>().SetActive(true);
-                            Clienttxt = client["Nom"].ToString();
-                        }   
+                        Debug.Log("yis is it");
+                        // _clientText.GetComponent<GameObject>().SetActive(true);
+                        Clienttxt = client["Nom"].ToString();
                     }
-                });
+                }
+
+            }
+        });
     }
 
     [SerializeField] private TMP_Text _plaqueText;
@@ -133,19 +138,19 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     [SerializeField] private GameObject _delete;
     [SerializeField] private GameObject _edit;
     [SerializeField] private GameObject _picture;
-    [Range (250, 400)] [SerializeField] private int _maxX;
-    [Range (250, 400)] [SerializeField] private int _maxY;
+    [Range(250, 400)][SerializeField] private int _maxX;
+    [Range(250, 400)][SerializeField] private int _maxY;
     private int _minX;
     private int _minY;
     private List<GameObject> _pic = new List<GameObject>();
     private GridLayoutGroup _grid;
     private Image _fond;
     private SetClientData _clientGest;
-    public SetClientData ClientGest {get=> _clientGest; set => _clientGest = value;}
+    public SetClientData ClientGest { get => _clientGest; set => _clientGest = value; }
     private GameObject _client;
-    public GameObject Client {get=>_client; set => _client = value;}
+    public GameObject Client { get => _client; set => _client = value; }
     private GameObject _car;
-    public GameObject Car {get=>_car; set => _car = value;}
+    public GameObject Car { get => _car; set => _car = value; }
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -165,7 +170,7 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     // void Start()
     // {
     //     _clientGest = _client.GetComponent<SetClientData>();
-        
+
     // }
 
     public void OnPointerDown(PointerEventData data)
@@ -177,13 +182,13 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         {
             pic.SetActive(_delete.activeInHierarchy);
         }
-        if(_delete.activeInHierarchy) 
+        if (_delete.activeInHierarchy)
         {
-            _grid.cellSize = new Vector2 (_maxX,_maxY);
+            _grid.cellSize = new Vector2(_maxX, _maxY);
         }
-        else 
+        else
         {
-            _grid.cellSize = new Vector2 (_minX,_minY);
+            _grid.cellSize = new Vector2(_minX, _minY);
         }
     }
 
@@ -198,7 +203,7 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     public void AddPic(Texture2D pic)
     {
         GameObject aPic = Instantiate(_picture, gameObject.transform.position, quaternion.identity);
-       _pic.Add(aPic);
+        _pic.Add(aPic);
         aPic.SetActive(false);
         aPic.transform.SetParent(gameObject.transform);
         aPic.transform.localScale = Vector3.one;
