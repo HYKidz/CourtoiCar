@@ -62,10 +62,13 @@ public class GetClientData : MonoBehaviour
                                     panel.Serie = car["Serie"].ToString();
                                     panel.Plaque = car["Plaque"].ToString();
                                     var timestamp = (Timestamp) client["TimeGet"];
+                                    panel.TimeGet = timestamp;
                                     var maDate = timestamp.ToDateTime();
                                     // DateTime result = DateTime.ParseExact(client["TimeGet"].ToString().Replace("Timest"))
                                     panel.DateEmprunt = maDate.ToString();
                                     panel._buttonRetour.SetActive(true);
+                                    panel.ID = documentSnapshot.Id;
+                                    panel.CarId = client["CarId"].ToString();
                                     Debug.Log(maDate);
                                     // DateTime timeGet = DateTime.TryParse(client["TimeGet"]);
                             }});

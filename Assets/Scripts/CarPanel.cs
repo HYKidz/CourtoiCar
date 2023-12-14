@@ -16,6 +16,7 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
 {
     //a changer plus tard pour que sa sois selon le user
     [SerializeField] private string _carPath = "car_list";
+    [SerializeField] private string _clientPath ="client_list";
     [SerializeField] private TMP_Text _marqueText;
     public class MyStringObjectEvent : UnityEvent<string>
     {
@@ -52,7 +53,7 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     private async void CallClient()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        Query clientquery = db.Collection("client_list");
+        Query clientquery = db.Collection(_clientPath);
         await clientquery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             QuerySnapshot allClientSnapshot = task.Result;
@@ -217,4 +218,18 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         _client.SetActive(!_client.activeInHierarchy);
         // SceneManager.LoadScene("Edit");
     }
+    // public async void Retour()
+    // {
+    //     FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+    //     DocumentReference clientRef = db.Collection(_clientPath).Document(_ID);
+    //     Dictionary<string, object> updateClient = new Dictionary<string, object>
+    //     {
+    //         // {"Hi", {}}
+    //         {
+    //             "Hierarchy", ($"Empreint du char{_plaque}", (_timeGet , DateTime.Now ))
+    //         }
+    //     };
+    //     await clientRef.UpdateAsync(updateClient);
+    //     //gerer retour de voiture
+    // }
 }

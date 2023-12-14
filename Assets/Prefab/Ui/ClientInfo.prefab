@@ -121,14 +121,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f432f02b9525d09468d5534ad914766e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clientPath: clien_list
+  _historyPath: history_list
+  _clientPath: client_list
+  _carPath: car_list
   _nomText: {fileID: 8405302623777151496}
   _serieText: {fileID: 7993301312708663855}
   _anneText: {fileID: 3550048914045948528}
   _infoText: {fileID: 1941547779733835578}
   _plaqueText: {fileID: 3890583765734674036}
   _dateEmpruntText: {fileID: 1377646128199399947}
-  _buttonRetour: {fileID: 0}
+  _buttonRetour: {fileID: 855604706465300499}
 --- !u!1 &298172653991333231
 GameObject:
   m_ObjectHideFlags: 0
