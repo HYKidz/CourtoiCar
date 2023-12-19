@@ -49,34 +49,24 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
             }
         }
     }
-
-    private async void CallClient()
-    {
-        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
-        Query clientquery = db.Collection(_clientPath);
-        await clientquery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
-        {
-            QuerySnapshot allClientSnapshot = task.Result;
-            foreach (DocumentSnapshot item in allClientSnapshot.Documents)
-            {
-                Dictionary<string, object> client = item.ToDictionary();
-                // Debug.Log(_ID);
-                // Debug.Log(client["CarId"].ToString()==_ID);
-                if (client.ContainsKey("CarId"))
-                {
-
-                    if (client["CarId"].ToString() == _ID)
-                    {
-                        Debug.Log("yis is it");
-                        // _clientText.GetComponent<GameObject>().SetActive(true);
-                        Clienttxt = client["Nom"].ToString();
-                    }
-                }
-
-            }
-        });
-    }
-
+     [SerializeField] private GameObject _delete;
+    [SerializeField] private GameObject _edit;
+    [SerializeField] private GameObject _picture;
+    [Range(250, 400)][SerializeField] private int _maxX;
+    [Range(250, 400)][SerializeField] private int _maxY;
+    private RectTransform _viewport;
+    public RectTransform ViewPort {set => _viewport = value;}
+    private int _minX;
+    private int _minY;
+    private List<GameObject> _pic = new List<GameObject>();
+    private GridLayoutGroup _grid;
+    private Image _fond;
+    private SetClientData _clientGest;
+    public SetClientData ClientGest { get => _clientGest; set => _clientGest = value; }
+    private GameObject _client;
+    public GameObject Client { get => _client; set => _client = value; }
+    private GameObject _car;
+    public GameObject Car { get => _car; set => _car = value; }
     [SerializeField] private TMP_Text _plaqueText;
     private string _plaque;
     public string Plaque
@@ -136,22 +126,36 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
     private string _ID;
     public string ID { get => _ID; set => _ID = value; }
 
-    [SerializeField] private GameObject _delete;
-    [SerializeField] private GameObject _edit;
-    [SerializeField] private GameObject _picture;
-    [Range(250, 400)][SerializeField] private int _maxX;
-    [Range(250, 400)][SerializeField] private int _maxY;
-    private int _minX;
-    private int _minY;
-    private List<GameObject> _pic = new List<GameObject>();
-    private GridLayoutGroup _grid;
-    private Image _fond;
-    private SetClientData _clientGest;
-    public SetClientData ClientGest { get => _clientGest; set => _clientGest = value; }
-    private GameObject _client;
-    public GameObject Client { get => _client; set => _client = value; }
-    private GameObject _car;
-    public GameObject Car { get => _car; set => _car = value; }
+    private async void CallClient()
+    {
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+        Query clientquery = db.Collection(_clientPath);
+        await clientquery.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        {
+            QuerySnapshot allClientSnapshot = task.Result;
+            foreach (DocumentSnapshot item in allClientSnapshot.Documents)
+            {
+                Dictionary<string, object> client = item.ToDictionary();
+                // Debug.Log(_ID);
+                // Debug.Log(client["CarId"].ToString()==_ID);
+                if (client.ContainsKey("CarId"))
+                {
+
+                    if (client["CarId"].ToString() == _ID)
+                    {
+                        Debug.Log("yis is it");
+                        // _clientText.GetComponent<GameObject>().SetActive(true);
+                        Clienttxt = client["Nom"].ToString();
+                    }
+                }
+
+            }
+        });
+    }
+
+    
+
+   
 
     /// <summary>
     /// Start is called on the frame when a script is enabled just before
@@ -185,6 +189,9 @@ public class CarPanel : MonoBehaviour, IPointerDownHandler
         }
         if (_delete.activeInHierarchy)
         {
+            
+            RectTransform tr =_viewport.gameObject.GetComponent<RectTransform>();
+            tr.anchoredPosition =new Vector3 (0,0,0);
             _grid.cellSize = new Vector2(_maxX, _maxY);
         }
         else

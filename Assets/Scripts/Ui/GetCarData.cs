@@ -52,6 +52,7 @@ public class GetCarData : MonoBehaviour
                     GOCar.transform.SetParent(gameObject.transform);
                     GOCar.transform.localScale = Vector3.one;
                     CarPanel panel = GOCar.GetComponent<CarPanel>();
+                    panel.ViewPort = gameObject.GetComponent<RectTransform>();
                     panel.Marque = car["Marque"].ToString();
                     panel.Serie = car["Serie"].ToString();
                     panel.Plaque = car["Plaque"].ToString();
