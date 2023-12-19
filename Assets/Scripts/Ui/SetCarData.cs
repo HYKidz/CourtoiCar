@@ -54,7 +54,7 @@ public class SetCarData : MonoBehaviour
         // //    };
         // //    var firestore = FirebaseFirestore.DefaultInstance;
         // //    firestore.Document(_carPath).SetAsync(carData);
-
+        // 1280    720
         //    //pas la meilleur fason de l'appeler, mais work for now
         //    SceneManager.LoadScene("List");
         // });
@@ -65,6 +65,7 @@ public class SetCarData : MonoBehaviour
     }
     private async void SendInfo()
     {
+        Debug.Log("Im invoked");
          Dictionary<string, object> car = new Dictionary<string, object>
             {
             {"Marque", _marqueField.text},

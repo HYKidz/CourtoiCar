@@ -16,6 +16,7 @@ public class PhotoController : MonoBehaviour
 
     //pour l'instant on prend des image deja la, mais penser a consevoir qu'on peu rajouter nombre de photo
     [SerializeField] private RawImage[] _images;
+    [SerializeField] private Button[] _button;
     private MyStringEvent _sendPicPath;
     private int _width;
     private int _height;
@@ -66,15 +67,24 @@ public class PhotoController : MonoBehaviour
 
     public void GetPicture(string marque)
     {
-        if(_dicpic.Count>=1)StartCoroutine(UploadCoroutine(marque));
+        if(_dicpic.Count>=1)
+        {
+            foreach (Button button in _button)
+            {
+                button.interactable = false;
+            }
+            StartCoroutine(UploadCoroutine(marque));
+        }
+        else _sendInfo.Invoke();
         
     }
     //may be good, but must think of how to implement photo in panel
     private IEnumerator UploadCoroutine(string marque)
     {
         var storage = FirebaseStorage.DefaultInstance;
-        for (int i = 0; i < _images.Length; i++)
+        for (int i = 0; i < _dicpic.Count; i++)
         {
+            Debug.Log("start anew");
             if (!_dicpic.ContainsKey(i))
             {
                 yield break;
@@ -110,6 +120,7 @@ public class PhotoController : MonoBehaviour
                 Debug.Log($"Download from {getUrlTask.Result}");
                 _sendPicPath.Invoke($"${path}");
             }
+            Debug.Log(_dicpic.Count+"  "+i);
         }
         _sendInfo.Invoke();
     }
